@@ -1,4 +1,16 @@
 .navbar {
   padding: 20px;
-  background-color: goldenrod;
+  background-color: black;
+}
+.logo {
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+.button {
+  color: darkorange;
+}
+.searchBar {
+  align-content: end;
 }
