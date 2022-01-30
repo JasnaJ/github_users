@@ -14,3 +14,12 @@
 .searchBar {
   align-content: end;
 }
+.card {
+  padding: 30px;
+}
+.icon {
+  width: 30px;
+}
+.picture {
+  width: 200px !important;
+}

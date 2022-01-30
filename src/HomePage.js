@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { Button, Form, FormControl, Navbar, Container, Nav, NavItem } from 'react-bootstrap';
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import initialState from './initialState';
 import Header from "./Header";
+import UserCard from "./UserCard";
 
 class HomePage extends Component{
     constructor (){
@@ -48,7 +48,14 @@ class HomePage extends Component{
 
     render(){
         return(
-            <Header handleChange={this.handleChange} handleSubmit={this.handleSubmit}/>
+            <div>
+                <Header handleChange={this.handleChange} handleSubmit={this.handleSubmit}/>
+                {this.state.user.avatar_url?
+                 <UserCard user={this.state.user}/> :
+                 <div></div>
+            }
+               
+            </div>
         )
     }
 }
