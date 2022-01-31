@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import initialState from './initialState';
-import Header from "./Header";
-import UserCard from "./UserCard";
+import { ListGroup, ListGroupItem, Card, Container, Row, Col, Button, Navbar, Nav,Form, FormControl, Text } from 'react-bootstrap';
+import * as Icon from 'react-bootstrap-icons';
 
 const token = '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'
 const bearer = 'Bearer ' + token;
@@ -26,12 +26,15 @@ class HomePage extends Component{
     };
 
     componentDidMount(){
+        this.setInitialState()
+    }
+    setInitialState =()=>{
         this.setState({
             user:initialState, 
             error:"",
             userName:initialState.login,
             repos:[]
-        });   
+        }); 
     }
 
     setNewUser = (data)=>{
@@ -44,7 +47,7 @@ class HomePage extends Component{
     
     setNewRepo = (data)=>{
         this.setState({
-            repos:this.state.repos.push(data)
+            repos:this.state.repos.concat(data)
         });
     };
 
@@ -67,11 +70,11 @@ class HomePage extends Component{
                        this.getUserRepo(data.login)
                     }
             });
+            console.log(this.state)
     }
        getUserRepo(name){
           
             const URL_repo = `https://api.github.com/users/${name}/repos?per_page=100`
-            const niz= []
             fetch(URL_repo,{
                 method: 'GET', 
                 headers: {
@@ -80,8 +83,7 @@ class HomePage extends Component{
             })
                 .then(res => res.json())
                 .then(data =>{
-                        console.log(data)
-                        this.setNewRepo(niz)
+                        this.setNewRepo(data)
                     })
     }
     handleChange(e){
@@ -90,19 +92,90 @@ class HomePage extends Component{
         })    }
 
     render(){
+        const user = this.state.user
+        const repo = this.state.repos.map(x=>{
+            return  (<ListGroupItem size="sm" >
+                        <Card.Body key={x.id}>
+                            <label className="x_name">{x.name}</label>
+                            <label className="x_visibility">{x.visibility}</label><br/> 
+                            <label className="x_description">{x.description}</label><br/>
+                            <Icon.CircleFill className='icon' />{x.language}  
+                            <Icon.Star className='icon' />  {x.stargazers_count}
+                            <Icon.Git className='icon' />{x.forks}
+                        </Card.Body>
+                    </ListGroupItem>)
+        })
         return(
             <div>
-                <Header 
-                    handleChange={this.handleChange} 
-                    handleSubmit={this.handleSubmit} 
-                    setInitialState={this.setUserState}
-                    inputValue={this.state.input}/>
-                {this.state.user.avatar_url?
-                <UserCard user={this.state.user} 
-                        getUserRepos={this.handleSubmit}
-                        repos={this.state.repos}/> :
-                <div></div>
-            }
+                <Navbar bg="dark" variant="dark">
+                    <Navbar.Brand >
+                        Github 
+                    </Navbar.Brand>
+                    <Navbar.Brand >
+                        <Nav className="me-auto">
+                            <Button variant="dark" onClick={this.setInitialState}>Home</Button>
+                        </Nav>            
+                    </Navbar.Brand>
+                    <Navbar.Collapse className="justify-content-end">
+                        <Form className="d-flex">
+                            <FormControl
+                                type="search"
+                                placeholder="Search Github users"
+                                aria-label="Search"
+                                name="input"
+                                onChange={this.handleChange}
+                            />
+                            <Button variant="light" onClick={this.handleSubmit}>Search</Button>
+                        </Form>
+                    </Navbar.Collapse>
+                </Navbar>
+                <Container  fluid="sm" >
+                    <Row>
+                        <Col>
+                            <Card className='card'>
+                                <Card.Img className='picture' src={user.avatar_url} />
+                                <Card.Body>
+                                    <Card.Title>{user.name}</Card.Title>
+                                    <Card.Subtitle>{user.login}</Card.Subtitle>
+                                </Card.Body>
+                                    <ListGroup className="list-group-flush">
+                                        <ListGroupItem size="sm">
+                                            <Icon.PeopleFill className='icon'/>{user.followers} followers
+                                        </ListGroupItem>
+                                        <ListGroupItem size="sm">
+                                            <Icon.PeopleFill className='icon'/>{user.following} following
+                                        </ListGroupItem>
+                                        <ListGroupItem size="sm">
+                                            <Icon.Building className='icon'/>{user.company} 
+                                        </ListGroupItem>
+                                        <ListGroupItem size="sm">
+                                            <Icon.GeoAltFill className='icon'/>{user.location} 
+                                        </ListGroupItem>
+                                        <ListGroupItem size="sm">
+                                            <Icon.Link45deg className='icon'/><a href={user.url}>{user.url}</a>
+                                        </ListGroupItem>
+                                    </ListGroup>
+                        </Card>
+                    </Col>
+                    <Col>
+                    <Card className='card'>
+                        <Card.Title variant="secondary" className="list-group-item-dark"size="sm" 
+                            >Repositories  
+                            <span title={user.public_repos} data-view-component="true" className="broj">
+                                {user.public_repos}
+                                </span>
+                        </Card.Title>
+                            <Card.Body>
+                                <ListGroup>
+                                    {repo}
+                                </ListGroup>
+                            </Card.Body>
+                              
+                        </Card>
+                    </Col>
+                </Row>
+            </Container>
+         
                
             </div>
         )

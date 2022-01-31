@@ -12,12 +12,15 @@ class RenderRepositories extends Component{
     // }
 
     render(){
+        let repo = this.props.repos[0];
+        console.log(repo)
         return(
             <div>
-                {(this.props.repos)?
+                {/* {(this.props.repos)?
                     <div>Imam neki repo</div> :
                     <div></div>
-                }
+                } */}
+                Imam neki repo
             </div>
         )
     }

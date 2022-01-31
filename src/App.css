@@ -33,12 +33,29 @@
 }
 .broj {
   display: inline-block;
-  min-width: 20px;
-  padding: 0 6px;
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 18px;
+
+  font-size: 20px;
+  -moz-border-radius: 50px; /* or 50% */
+  border-radius: 50px; /* or 50% */
+
+  color: white;
   text-align: center;
-  border: 1px solid var(--color-counter-border);
-  border-radius: 2em;
+  align-items: flex-end;
+  padding: 20px;
+}
+.list-group-item-dark {
+  padding-left: 20px;
+}
+.x_name {
+  color: mediumblue;
+  font-size: 16px;
+  padding-right: 20px;
+}
+.x_visibility {
+  border-radius: 25% 10%;
+
+  background-color: lightgray;
+  text-align: center;
+  align-items: flex-end;
+  padding: 5px;
 }
