@@ -19,7 +19,26 @@
 }
 .icon {
   width: 30px;
+  font-size: small;
 }
 .picture {
   width: 200px !important;
+  border-radius: 50% !important;
+}
+.container-sm {
+  padding: 20px !important;
+}
+.list-group-item {
+  font-size: small;
+}
+.broj {
+  display: inline-block;
+  min-width: 20px;
+  padding: 0 6px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+  text-align: center;
+  border: 1px solid var(--color-counter-border);
+  border-radius: 2em;
 }
