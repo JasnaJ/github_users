@@ -1,29 +1,29 @@
 import React,{Component} from 'react'
-import { Button, Form, FormControl, Navbar, Container, Nav, NavItem } from 'react-bootstrap';
+import { Button, Form, FormControl, Navbar, Nav, } from 'react-bootstrap';
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 class Header extends Component{
 
     render(){
         return(
-            <Navbar bg="dark" variant="dark">
-            <Navbar.Brand href="#home">
-            {/* <img
-              alt=""
-              src="./iconmonstr-github-1.svg"
-              width="30"
-              height="30"
-              className="d-inline-block align-top logo"
-            />{' '}*/}Github 
+        <Navbar bg="dark" variant="dark">
+            <Navbar.Brand >
+                Github 
+            </Navbar.Brand>
+            <Navbar.Brand >
+                <Nav className="me-auto">
+                    <Button variant="dark" onClick={this.props.setInitialState}>Home</Button>
+                </Nav>            
             </Navbar.Brand>
             <Navbar.Collapse className="justify-content-end">
                 <Form className="d-flex">
                     <FormControl
-                    type="search"
-                    placeholder="Search Github users"
-                    aria-label="Search"
-                    name="input"
-                    onChange={this.props.handleChange}
+                        type="search"
+                        placeholder="Search Github users"
+                        aria-label="Search"
+                        name="input"
+                        value={this.props.inputValue}
+                        onChange={this.props.handleChange}
                     />
                     <Button variant="light" onClick={this.props.handleSubmit}>Search</Button>
                 </Form>

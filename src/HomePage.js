@@ -5,6 +5,8 @@ import initialState from './initialState';
 import Header from "./Header";
 import UserCard from "./UserCard";
 
+const token = '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'
+
 class HomePage extends Component{
     constructor (){
         super();
@@ -18,25 +20,37 @@ class HomePage extends Component{
     };
 
     componentDidMount(){
-        this.setNewState()    
+        this.setUserState(initialState)    
     }
 
-    setNewState(){
-        this.setState(Object.assign(this.state.user,initialState));
+    setUserState = (data)=>{
+        if(!data.avatar_url){
+            this.setState({user:initialState, input:""});
+        }
+        else{
+            this.setState({user:data, input:""});
+
+        }
         console.log(this.state)
     }
 
     handleSubmit(){
         const URL = `https://api.github.com/users/${this.state.input}`
-        fetch(URL)
+        var bearer = 'Bearer ' + token;
+
+        fetch(URL,{
+            method: 'GET', 
+            headers: {
+                'Authorization': bearer,
+            }
+        })
             .then(res => res.json())
             .then(data =>{
                 if(data.message){
                     this.setState({error:data.message})
                 }
                 else{
-                    this.setState(Object.assign(this.state.user,data));
-                }
+                   this.setUserState(data)                }
         });
         console.log(this.state)
     }
@@ -49,10 +63,14 @@ class HomePage extends Component{
     render(){
         return(
             <div>
-                <Header handleChange={this.handleChange} handleSubmit={this.handleSubmit}/>
+                <Header 
+                    handleChange={this.handleChange} 
+                    handleSubmit={this.handleSubmit} 
+                    setInitialState={this.setUserState}
+                    inputValue={this.state.input}/>
                 {this.state.user.avatar_url?
-                 <UserCard user={this.state.user}/> :
-                 <div></div>
+                <UserCard user={this.state.user} /> :
+                <div></div>
             }
                
             </div>
