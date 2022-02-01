@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import initialState from './initialState';
-import { ListGroup, ListGroupItem, Card, Container, Row, Col, Button, Navbar, Nav,Form, FormControl, Text } from 'react-bootstrap';
+import { ListGroup, ListGroupItem, Card, Container, Row, Col, Button, Navbar, Nav,Form, FormControl } from 'react-bootstrap';
 import * as Icon from 'react-bootstrap-icons';
 
 const token = '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'
@@ -14,7 +14,6 @@ class HomePage extends Component{
         this.state = {
             user:{},
             input:"",
-            error:"",
             userName:"",
             repos:[]
         }
@@ -30,10 +29,11 @@ class HomePage extends Component{
     }
     setInitialState =()=>{
         this.setState({
-            user:initialState, 
+            user:initialState.user, 
             error:"",
-            userName:initialState.login,
-            repos:[]
+            userName:initialState.user.login,
+            repos:initialState.repos,
+            input:""
         }); 
     }
 
@@ -42,13 +42,16 @@ class HomePage extends Component{
                 user:data, 
                 userName:data.login, 
                 input:"",
+                repos:[]
             });
+            console.log(this.state)
         };
     
     setNewRepo = (data)=>{
         this.setState({
             repos:this.state.repos.concat(data)
         });
+        console.log(this.state)
     };
 
     handleSubmit(){
@@ -63,14 +66,13 @@ class HomePage extends Component{
                 .then(res => res.json())
                 .then(data =>{
                     if(data.message){
-                        this.setState({error:data.message})
+                        this.setState({error:data.message, input:""})
                     }
                     else{
                        this.setNewUser(data)
                        this.getUserRepo(data.login)
                     }
             });
-            console.log(this.state)
     }
        getUserRepo(name){
           
@@ -83,8 +85,13 @@ class HomePage extends Component{
             })
                 .then(res => res.json())
                 .then(data =>{
+                    if(data.message){
+                        this.setState({error:data.message})
+                    }
+                    else{
                         this.setNewRepo(data)
-                    })
+                    }
+                })
     }
     handleChange(e){
         this.setState({
@@ -124,11 +131,14 @@ class HomePage extends Component{
                                 aria-label="Search"
                                 name="input"
                                 onChange={this.handleChange}
+                                value={this.state.input}
                             />
                             <Button variant="light" onClick={this.handleSubmit}>Search</Button>
                         </Form>
                     </Navbar.Collapse>
                 </Navbar>
+                {this.state.error?
+                <h1>{this.state.error}</h1> :
                 <Container  fluid="sm" >
                     <Row>
                         <Col>
@@ -175,7 +185,7 @@ class HomePage extends Component{
                     </Col>
                 </Row>
             </Container>
-         
+    }
                
             </div>
         )
